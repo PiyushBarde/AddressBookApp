@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.bridgelabz.addressbookapp.dto.AddressDTO;
+
 @Entity
 public class Address {
 	@Id
@@ -19,30 +21,30 @@ public class Address {
 	
 	//---------------constructors---------------------//
 	
-	public Address(Address address) {
+	public Address(AddressDTO address) {
 		super();
-		this.firstName = address.firstName;
-		this.lastName = address.lastName;
-		this.email = address.email;
-		this.phoneNumber = address.phoneNumber;
-		this.city = address.city;
-		this.state = address.state;
-		this.zip = address.zip;
+		this.firstName = address.getFirstName();
+		this.lastName = address.getLastName();
+		this.email = address.getEmail();
+		this.phoneNumber = address.getPhoneNumber();
+		this.city = address.getCity();
+		this.state = address.getState();
+		this.zip = address.getZip();
 	}
 	
 	public Address() {
 		super();
 	}
 	
-	public Address(Integer id, Address address) {
+	public Address(Integer id, AddressDTO address) {
 		this.id=id;
-		this.firstName = address.firstName;
-		this.lastName = address.lastName;
-		this.email = address.email;
-		this.phoneNumber = address.phoneNumber;
-		this.city = address.city;
-		this.state = address.state;
-		this.zip = address.zip;
+		this.firstName = address.getFirstName();
+		this.lastName = address.getLastName();
+		this.email = address.getEmail();
+		this.phoneNumber = address.getPhoneNumber();
+		this.city = address.getCity();
+		this.state = address.getState();
+		this.zip = address.getZip();
 	}
 	//--------------Getters & Setters------------------//
 	
