@@ -10,7 +10,7 @@ import com.bridgelabz.addressbookapp.model.Address;
 import com.bridgelabz.addressbookapp.repository.AddressRepository;
 
 @Service
-public class AddressService {
+public class AddressService implements IAddressService{
 	@Autowired
 	AddressRepository repo;
 	

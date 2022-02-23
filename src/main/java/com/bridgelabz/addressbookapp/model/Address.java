@@ -46,10 +46,9 @@ public class Address {
 		this.state = address.getState();
 		this.zip = address.getZip();
 	}
+	
 	//--------------Getters & Setters------------------//
 	
-	
-
 	public Integer getId() {
 		return id;
 	}

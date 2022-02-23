@@ -9,14 +9,15 @@ public class AddressDTO {
 	private String state;
 	private Integer zip;
 	
+	public AddressDTO() {
+		super();
+	}
+	
 	public String getFirstName() {
 		return firstName;
 	}
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
-	}
-	public AddressDTO() {
-		super();
 	}
 	public String getLastName() {
 		return lastName;
