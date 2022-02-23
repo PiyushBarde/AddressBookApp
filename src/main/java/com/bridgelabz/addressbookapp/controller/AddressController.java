@@ -1,9 +1,7 @@
 package com.bridgelabz.addressbookapp.controller;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,53 +16,56 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.addressbookapp.dto.AddressDTO;
 import com.bridgelabz.addressbookapp.dto.ResponseDTO;
 import com.bridgelabz.addressbookapp.model.Address;
-import com.bridgelabz.addressbookapp.repository.AddressRepository;
+import com.bridgelabz.addressbookapp.service.AddressService;
 
 @RestController
 @RequestMapping("/addressbook")
 public class AddressController {
 	
 	@Autowired
-	AddressRepository repo;
+	AddressService service;
 	
 	@GetMapping("")
-	public String getMessage() {
-		return "Welcome to Addressbook App";
+	public String welcomeUser() {
+		return "Welcome to the addressbook app";
 	}
 	
-	@PostMapping("/post")
-	public ResponseEntity<ResponseDTO> postAddress(@RequestBody AddressDTO address) {
-		Address newAddress = new Address(address);
-		repo.save(newAddress);
-		ResponseDTO response = new ResponseDTO("Address Added : ", newAddress);
-		return new ResponseEntity<ResponseDTO>(response,HttpStatus.OK);
-	}
-	
+	//to get all the addresses present in address book (using .findAll())
 	@GetMapping("/get")
-	public ResponseEntity<ResponseDTO> getAddress() {
-		List<Address> address = repo.findAll();
-		ResponseDTO dto = new ResponseDTO("Address Book:",address);
-		return new ResponseEntity<ResponseDTO>(dto,HttpStatus.OK);
+	public ResponseEntity<String>getAllData(){
+		List<Address> listOfContacts = service.getListOfAddresses();
+		ResponseDTO response = new ResponseDTO("Addresbook :", listOfContacts);
+		return new ResponseEntity(response,HttpStatus.OK);
 	}
 	
-	@GetMapping("/get/{id}")
-	public ResponseEntity<ResponseDTO> getAddressById(@PathVariable Integer id) {
-		Optional<Address> address = repo.findById(id);
-		ResponseDTO dto = new ResponseDTO("Address ; ",address);
-		return new ResponseEntity<ResponseDTO>(dto,HttpStatus.OK);
-	}
-	
-	@PutMapping("/update/{id}")
-	public ResponseEntity<ResponseDTO> updateAddress(@PathVariable Integer id,@RequestBody AddressDTO dto) {
-		Address address = new Address(id,dto);
-		ResponseDTO response = new ResponseDTO("Address Updated : ", address);
+	//to add the address to the address book (validation applied from validation starter dependency)
+	@PostMapping("/post")
+	public ResponseEntity<ResponseDTO> postData(@RequestBody AddressDTO dto) {
+		Address newContact = service.saveAddress(dto);
+		ResponseDTO response = new ResponseDTO("New Contact Added in Addressbook : ", newContact);
 		return new ResponseEntity<ResponseDTO>(response,HttpStatus.OK);
 	}
 	
+	//to get the specific through id passed as variable address from address book (using stream)
+	@GetMapping("/get/{id}")
+	public  ResponseEntity<Address> retriveData(@PathVariable Integer id){
+		ResponseDTO response = new ResponseDTO("Addressbook of given id: ",service.getAddressbyId(id));
+		return new ResponseEntity(response,HttpStatus.OK);
+	}
+	
+	//to update the address through id passed as variable address from address book (using .findById & .isPresent)
+	@PutMapping("/update/{id}")
+	public ResponseEntity<ResponseDTO> updateById(@PathVariable Integer id,@RequestBody AddressDTO dto){
+		Address newContact = service.updateDateById(id,dto);
+		ResponseDTO response = new ResponseDTO("Addressbook updated : ", newContact);
+		return new ResponseEntity<ResponseDTO>(response,HttpStatus.OK);
+	}
+	
+	//to delete contact from address book (using .findById & .isEmpty)
 	@GetMapping("/delete/{id}")
-	public String deleteAddress(@PathVariable Integer id) {
-		repo.deleteById(id);
-		return "Address of id: " + id + " has been deleted";
+	public ResponseEntity<String> deleteDataById(@PathVariable Integer id){
+		service.deleteContact(id);
+		return new ResponseEntity<String>("Contact deleted succesfully",HttpStatus.OK);
 	}
 }
 
