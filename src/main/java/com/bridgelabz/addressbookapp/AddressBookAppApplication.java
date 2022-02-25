@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+//to lauch spring application(SpringApplication.run)
 public class AddressBookAppApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AddressBookAppApplication.class, args);

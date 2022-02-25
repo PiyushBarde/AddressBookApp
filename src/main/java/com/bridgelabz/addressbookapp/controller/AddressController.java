@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.addressbookapp.dto.AddressDTO;
 import com.bridgelabz.addressbookapp.dto.ResponseDTO;
 import com.bridgelabz.addressbookapp.model.Address;
-import com.bridgelabz.addressbookapp.service.AddressService;
+import com.bridgelabz.addressbookapp.service.IAddressService;
 
 @RestController
 @RequestMapping("/addressbook")
 public class AddressController {
 	
 	@Autowired
-	AddressService service;
+	IAddressService service;
 	
 	@GetMapping("")
 	public String welcomeUser() {
@@ -55,16 +56,16 @@ public class AddressController {
 	//to update the address through id passed as variable address from address book (using .findById & .isPresent)
 	@PutMapping("/update/{id}")
 	public ResponseEntity<ResponseDTO> updateById(@PathVariable Integer id,@RequestBody AddressDTO dto){
-		Address newContact = service.updateDateById(id,dto);
+		Address newContact = service.updateAddressById(id,dto);
 		ResponseDTO response = new ResponseDTO("Addressbook updated : ", newContact);
 		return new ResponseEntity<ResponseDTO>(response,HttpStatus.OK);
 	}
 	
 	//to delete contact from address book (using .findById & .isEmpty)
-	@GetMapping("/delete/{id}")
-	public ResponseEntity<String> deleteDataById(@PathVariable Integer id){
-		service.deleteContact(id);
-		return new ResponseEntity<String>("Contact deleted succesfully",HttpStatus.OK);
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<ResponseDTO> deleteDataById(@PathVariable Integer id){
+		ResponseDTO response = new ResponseDTO("This Address is deleted : ", service.deleteAddressById(id));
+		return new ResponseEntity<ResponseDTO>(response,HttpStatus.OK);
 	}
 }
 
