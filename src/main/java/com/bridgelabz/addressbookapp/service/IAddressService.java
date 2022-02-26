@@ -1,5 +1,7 @@
 package com.bridgelabz.addressbookapp.service;
 
-public interface IAddressService {
+import com.bridgelabz.addressbookapp.model.Address;
 
+public interface IAddressService {
+	public Address getAddressbyId(String token);
 }

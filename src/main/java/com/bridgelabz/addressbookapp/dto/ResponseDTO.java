@@ -1,5 +1,8 @@
 package com.bridgelabz.addressbookapp.dto;
 
+import lombok.Data;
+
+@Data
 public class ResponseDTO {
 	public ResponseDTO() {
 		super();
@@ -10,18 +13,5 @@ public class ResponseDTO {
 		super();
 		this.contact = contact;
 		this.message = message;
-	}
-	public String getMessage() {
-		return message;
-	}
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	public Object getContact() {
-		return contact;
-	}
-	public void setContact(Object contact) {
-		this.contact = contact;
-	}
-	
+	}	
 }

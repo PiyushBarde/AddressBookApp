@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,9 +31,9 @@ public class AddressController {
 	}
 	
 	//to get all the addresses present in address book (using .findAll())
-	@GetMapping("/get")
-	public ResponseEntity<String>getAllData(){
-		List<Address> listOfContacts = service.getListOfAddresses();
+	@GetMapping("/get/{key}")
+	public ResponseEntity<String>getAllData(@PathVariable String key){
+		List<Address> listOfContacts = service.getListOfAddresses(key);
 		ResponseDTO response = new ResponseDTO("Addresbook :", listOfContacts);
 		return new ResponseEntity(response,HttpStatus.OK);
 	}
@@ -40,31 +41,31 @@ public class AddressController {
 	//to add the address to the address book (validation applied from validation starter dependency)
 	@PostMapping("/post")
 	public ResponseEntity<ResponseDTO> postData(@RequestBody AddressDTO dto) {
-		Address newContact = service.saveAddress(dto);
-		ResponseDTO response = new ResponseDTO("New Contact Added in Addressbook : ", newContact);
+		String address = service.saveAddress(dto);
+		ResponseDTO response = new ResponseDTO("New address Added in Addressbook : ", address);
 		return new ResponseEntity<ResponseDTO>(response,HttpStatus.OK);
 	}
 	
 	//to get the specific through id passed as variable address from address book (using stream)
-	@GetMapping("/get/{id}")
-	public  ResponseEntity<Address> retriveData(@PathVariable Integer id){
-		ResponseDTO response = new ResponseDTO("Addressbook of given id: ",service.getAddressbyId(id));
+	@GetMapping("/getAddress/{token}")
+	public  ResponseEntity<Address> retriveData(@PathVariable String token){
+		ResponseDTO response = new ResponseDTO("Addressbook of given id: ",service.getAddressbyId(token));
 		return new ResponseEntity(response,HttpStatus.OK);
 	}
 	
 	//to update the address through id passed as variable address from address book (using .findById & .isPresent)
-	@PutMapping("/update/{id}")
-	public ResponseEntity<ResponseDTO> updateById(@PathVariable Integer id,@RequestBody AddressDTO dto){
-		Address newContact = service.updateDateById(id,dto);
+	@PutMapping("/update/{token}")
+	public ResponseEntity<ResponseDTO> updateById(@PathVariable String token,@RequestBody AddressDTO dto){
+		Address newContact = service.updateDateById(token,dto);
 		ResponseDTO response = new ResponseDTO("Addressbook updated : ", newContact);
 		return new ResponseEntity<ResponseDTO>(response,HttpStatus.OK);
 	}
 	
 	//to delete contact from address book (using .findById & .isEmpty)
-	@GetMapping("/delete/{id}")
-	public ResponseEntity<String> deleteDataById(@PathVariable Integer id){
-		service.deleteContact(id);
-		return new ResponseEntity<String>("Contact deleted succesfully",HttpStatus.OK);
+	@DeleteMapping("/delete/{token}")
+	public ResponseEntity<ResponseDTO> deleteDataById(@PathVariable String token){
+		ResponseDTO response = new ResponseDTO("Contact deleted succesfully",service.deleteContact(token));
+		return new ResponseEntity<ResponseDTO>(response,HttpStatus.OK);
 	}
 }
 
