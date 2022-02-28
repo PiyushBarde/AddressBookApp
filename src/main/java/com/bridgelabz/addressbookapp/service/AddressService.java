@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.bridgelabz.addressbookapp.dto.AddressDTO;
 import com.bridgelabz.addressbookapp.exceptions.AddressbookAppException;
 import com.bridgelabz.addressbookapp.model.Address;
@@ -44,8 +43,8 @@ public class AddressService implements IAddressService{
 		Address address = new Address(dto);
 		repo.save(address);
 		String token = tokenUtil.createToken(address.getId());
-	//	sender.sendEmail("piyushbarde1@gmail.com", "about the address added", "token : " + token);
-		sender.sendEmail("piyushbarde1@gmail.com", "about the address added", "http://localhost:8080/addressbook/getAddress/" + token + " use this token to retrive address");
+		sender.sendEmail("piyushbarde1@gmail.com", "about the address added", "http://localhost:8080/addressbook/getAddress/" + 
+						token + " use this token to retrive address");
 		return token;
 	}
 	

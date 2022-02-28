@@ -13,7 +13,6 @@ import lombok.Setter;
 @Component
 public class EmailSenderService {
 	
-	
 	@Autowired
 	private JavaMailSender mailsender;
 	private String universalkey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
